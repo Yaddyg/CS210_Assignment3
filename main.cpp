@@ -1,53 +1,33 @@
 #include <iostream>
-#include "ArrayList.h"
-
-    //class Box {
-
-    //public:
-    //Box(int value):data(new int(value)) {}
-
-    //~Box() {
-        //delete data;
-      //  data = nullptr;
-    //}
-
-    //int value() {
-      //  return *data;
-    //}
-    //private:
-    //int *data;
-
-//};
+#include "List.h"
+#include "Data.h"
 
 int main() {
+    std::unique_ptr<List<int>> list = makeList<int>();
 
- //   int* p = new int(5);
+    list->addFront(new int(10));
+    list->addFront(new int(20));
+    list->addFront(new int(30));
+    list->print();
 
-   // std::cout << *p << std::endl;
-    // std::cout << p << std::endl;
+    int key = 20;
+    std::cout << "search(20): "
+              << (list->search(&key) ? "found" : "not found") << std::endl;
 
-   // delete p;
- //   p = nullptr;
+    list->deleteFront();
+    list->print();
 
-  /*  Box *box1 = new Box(8);
-    std::cout << box1->value() << std::endl;
+    std::unique_ptr<List<Data>> roster = makeList<Data>();
+    roster->addFront(new Data(1, "Alice"));
+    roster->addFront(new Data(2, "Bilal"));
+    roster->addFront(new Data(3, "Chen"));
+    roster->print();
 
-    delete box1;
-
-
-    return 0;
-*/
-
-    ArrayList<string> list;
-
-
-    list.addBack("Banna");
-    list.addBack("Apple");
-
-    list.printArray();
-
+    Data query(2, "");
+    std::cout << "search(id 2): "
+              << (roster->search(&query) ? "found" : "not found")
+              << std::endl;
 
     return 0;
-
-    };
+};
 

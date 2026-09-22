@@ -1,60 +1,58 @@
 #pragma once
 #include "Node.h"
+#include "List.h"
+
 using namespace std;
 
 template <typename T>
+class LinkedList : public List<T> {
+public:
+    LinkedList() : head_(nullptr) {}
 
-class LinkedList {
-    Node<T> *head;
-    Node<T> *tail;
-    int size;
-
-    LinkedList(T *value) {
-
-        Node<T> *temp = new Node<T>(value);
-        head = temp;
-
-        size = 1;
-
+    void addFront(T* value) override {
+        Node<T>* fresh = new Node<T>(value);
+        fresh->next = head_;
+        head_ = fresh;
     }
 
-    LinkedList() {
-        head = nullptr;
-        tail = nullptr;
-        size = 0;
-    }
-
-    void print() {
-        Node<T> *temp1 = head;
-        while (head != nullptr) {
-
-            temp1->print()<<" ";
-            temp1 = temp1->next;
-        }
-    }
-
-    void append(T *value) {
-
-        Node<T> *newnode = new Node<T>(value);
-
-        if (head == nullptr) {
-            head = newnode;
-            size++;
+    void deleteFront() override {
+        if (head_ == nullptr) {
+            std::cout << "LinkedList is empty." << std::endl;
             return;
-
         }
+        Node<T>* doomed = head_;
+        head_ = head_->next;
+        delete doomed->data;
+        delete doomed;
+    }
 
-        tail->next = newnode;
-        tail = newnode;//tail=tail->next; also correct/ This is now O(1) time instead of going through entire list.
-
-
-            size++;
-
+    bool search(T* value) const override {
+        Node<T>* current = head_;
+        while (current != nullptr) {
+            if (*current->data == *value) return true;
+            current = current->next;
         }
+        return false;
+    }
 
-        //Add delete to end method before tuesday.
+    void print() const override {
+        Node<T>* current = head_;
+        while (current != nullptr) {
+            std::cout << *current->data << ",";
+            current = current->next;
+        }
+        std::cout << std::endl;
+    }
 
+    ~LinkedList() override {
+        while (head_ != nullptr) {
+            Node<T>* doomed = head_;
+            head_ = head_->next;
+            delete doomed->data;
+            delete doomed;
+        }
+    }
 
-    
-
+private:
+    Node<T>* head_;
 };
